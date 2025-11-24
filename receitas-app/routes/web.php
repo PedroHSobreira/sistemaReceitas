@@ -13,6 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/',[\App\Http\Controllers\registroController::Class,'paginaInicial']);
+Route::get('/cadastrar',[\App\Http\Controllers\registroController::Class,'cad']);
+Route::get('/cadastrar/salvar',[\App\Http\Controllers\registroController::Class,'inserir']);

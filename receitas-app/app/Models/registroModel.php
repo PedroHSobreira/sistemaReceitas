@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class registroModel extends Model
 {
     use HasFactory;
-}
+    protected $table='registro';
+}//fim da classe model
+

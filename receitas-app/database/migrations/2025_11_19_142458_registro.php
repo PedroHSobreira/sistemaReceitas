@@ -17,9 +17,10 @@ return new class extends Migration
         Schema::create('registro', function (Blueprint $table){
                     $table->increments('id');
                     $table->text('receita');
-                    $table->float('quantidade');
+                    $table->text('quantidade');
+                    $table->text('medidas');
                     $table->text('ingredientes');
-                    $table->text('preparo');
+                    $table->longText('preparo');
                     $table->timestamps();
         });
     }//fim do up
