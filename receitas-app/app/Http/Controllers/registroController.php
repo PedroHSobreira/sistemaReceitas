@@ -15,17 +15,23 @@ class registroController extends Controller
     }//fim do metodo que direciona para pagina inicial
 
     public function inserir(Request $request){
+
         $receita = $request->input('receita');//Coletando nome da receita
-        $quantidade = $request->input('quantidade');//Coletando quantidade 
-        $medidas = $request->input('medidas');//Coletando medidas
-        $ingredientes = $request->input('ingredientes');//Coletando ingredientes
         $preparo = $request->input('preparo');//Coletando modo de preparo
+
+
+        //coleta dos campos dinamicos
+        $quantidade     = $request->input('quantidade', []);
+        $medidas        = $request->input('medidas', []);
+        $ingredientes   = $request->input('ingredientes', []);
+        
+       
         //chamar a model = vai inserir os dados no banco
         $model = new registroModel();
         $model->receita         = $receita;
-        $model->quantidade      = $quantidade;
-        $model->medidas         = $medidas;
-        $model->ingredientes    = $ingredientes;
+        $model->quantidade      = json_encode($quantidade);
+        $model->medidas         = json_encode($medidas);
+        $model->ingredientes    = json_encode($ingredientes);
         $model->preparo         = $preparo;
         //Efetivar a inserçao no banco
         $model->save();
