@@ -39,8 +39,26 @@ class registroController extends Controller
         return redirect('/cadastrar');
     }//fim do metodo inserir
 
+    public function consultar(Request $request){
+        //pegar o texto digitado na busca
+        $busca = $request->input('busca');
 
+        //se o usuario buscar, filtra
+        if($busca) {
+            $resultados = registroModel::where('receita','like', "%$busca%")->get();
+            
+            if ($resultados->isEmpty()){
+                $mensagem = "Nenhuma receita encontrada para: $busca";
+            } else {
+                $mensagem = null;
+            }
+        } else{
+            $resultados = [];
+            
+        }
 
+        return view('paginas.consultar', compact('resultados','busca'));
+         
+        }//fim do consuktar
 
-    
     }//fim da classe
