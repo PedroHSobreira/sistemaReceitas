@@ -58,7 +58,55 @@ class registroController extends Controller
         }
 
         return view('paginas.consultar', compact('resultados','busca'));
-         
-        }//fim do consuktar
+        }//fim do consultar
+
+        public function atualizar(Request $request, $id)
+        {
+            $receita = registroModel::findOrFail($id);
+
+            $receita->receita = $request->input('receita');
+            $receita->preparo = $request->input('preparo');
+
+            $linhas = preg_split('/\r\n/', trim($request->input('ingredientes')));
+
+            $qtd = [];
+            $med = [];
+            $ing = [];
+
+            foreach ($linhas as $linha) {
+
+                // Remove espaços extras
+                $linha = trim($linha);
+                if ($linha === "") continue;
+
+                $partes = explode('-', $linha, 2);
+
+                $esquerda = trim($partes[0] ?? '');
+                $direita  = trim($partes[1] ?? '');
+
+                $esqPartes = explode(' ', $esquerda, 2);
+
+                $qtd[] = $esqPartes[0] ?? '';
+                $med[] = $esqPartes[1] ?? '';
+                $ing[] = $direita;
+            }
+
+        $receita->quantidade   = json_encode($qtd);
+        $receita->medidas      = json_encode($med);
+        $receita->ingredientes = json_encode($ing);
+
+        $receita->save();
+        return redirect('/consultar')->with('sucesso', 'Receita atualizada com sucesso!');
+    }
+
+    public function excluir($id)
+    {
+        $receita = registroModel::findOrFail($id);
+
+        $receita->delete();
+
+        return redirect('/consultar')->with('sucesso', 'Receita excluída com sucesso!');
+
+    }
 
     }//fim da classe
